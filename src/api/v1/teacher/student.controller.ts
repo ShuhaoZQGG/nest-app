@@ -4,23 +4,24 @@ import {
   StudentResponseDto,
   UpdateStudentDto,
 } from '../student/dto/student.dto';
+import { StudentService } from '../student/student.service';
 
 @Controller('/api/v1/teachers/:teacherId/students')
 export class StudentTeacherController {
+  constructor(private readonly studentService: StudentService){}
   @Get()
   getStudentsByTeacherId(
     @Param('teacherId') teacherId: string,
   ): FindStudentResponseDto[] {
-    return `Get Students By TeacherId of ${teacherId}`;
+    return this.studentService.getStudentsByTeacherId(teacherId);
   }
 
   @Put('/:studentId')
+  // Update student's teacherId
   updateStudentTeacher(
     @Param('teacherId') teacherId: string,
     @Param('studentId') studentId: string,
-    @Body() body: UpdateStudentDto,
   ): StudentResponseDto {
-    return `update student by teacherId of ${teacherId} and student Id of ${studentId}
-    by ${JSON.stringify(body)}`;
+    return this.studentService.updateStudentTeacher(studentId, teacherId);
   }
 }
